@@ -1,0 +1,980 @@
+<html lang="zh-CN"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>芝麻分组队凑2026分 - 赛博朋克版</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&amp;family=Rajdhani:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cyber-black': '#0A0A0A',
+                        'cyber-dark': '#0a0a1a',
+                        'cyber-blue': '#00f3ff',
+                        'cyber-pink': '#ff00ff',
+                        'cyber-green': '#00ff9d',
+                        'cyber-gray': '#1a1a2e',
+                        'cyber-dark-gray': '#121225'
+                    },
+                    fontFamily: {
+                        'orbitron': ['Orbitron', 'sans-serif'],
+                        'rajdhani': ['Rajdhani', 'sans-serif'],
+                        'inter': ['Inter', 'sans-serif']
+                    },
+                    animation: {
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'scan': 'scan 3s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'blink': 'blink 2s step-end infinite'
+                    },
+                    keyframes: {
+                        glow: {
+                            '0%': { 'text-shadow': '0 0 5px #00f3ff, 0 0 10px #00f3ff' },
+                            '100%': { 'text-shadow': '0 0 10px #00f3ff, 0 0 20px #00f3ff, 0 0 30px #00f3ff' }
+                        },
+                        scan: {
+                            '0%': { 'background-position': '0 -100%' },
+                            '100%': { 'background-position': '0 100%' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        },
+                        blink: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0.5' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-glow {
+                text-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+            }
+            .text-glow-lg {
+                text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+            }
+            .border-glow {
+                box-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+            }
+            .border-glow-lg {
+                box-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+            }
+            .glass-effect {
+                background: rgba(26, 26, 46, 0.7);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid rgba(0, 243, 255, 0.1);
+            }
+            .glass-effect-hover {
+                transition: all 0.3s ease;
+            }
+            .glass-effect-hover:hover {
+                background: rgba(26, 26, 46, 0.8);
+                border-color: rgba(0, 243, 255, 0.3);
+                box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+            }
+            .scan-line {
+                position: relative;
+                overflow: hidden;
+            }
+            .scan-line::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(to bottom, transparent 0%, rgba(0, 243, 255, 0.1) 50%, transparent 100%);
+                background-size: 100% 200%;
+                animation: scan 3s linear infinite;
+                pointer-events: none;
+            }
+            .circuit-bg {
+                background-image: url('https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/43a8f2657463406c8e795786f702ac3f~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=2026020310091486BE470D1A10273A7830&rrcfp=f06b921b&x-expires=1772676584&x-signature=PMCxE%2FZO2naNgZbG%2Btn27PXDzms%3D');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+            .city-bg {
+                background-image: url('https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/6fc68d2d3d4045b5ba8ca412ef4e62f6~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=2026020310091486BE470D1A10273A7830&rrcfp=f06b921b&x-expires=1772676572&x-signature=xXjmxEt8wrPs8kf9IOpbyjiPEsc%3D');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+            .input-focus {
+                transition: all 0.3s ease;
+            }
+            .input-focus:focus {
+                border-color: #00f3ff;
+                box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+            }
+            .btn-cyber {
+                position: relative;
+                overflow: hidden;
+                transition: all 0.3s ease;
+            }
+            .btn-cyber::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+                transition: all 0.5s ease;
+            }
+            .btn-cyber:hover::before {
+                left: 100%;
+            }
+            .btn-cyber:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0, 243, 255, 0.4);
+            }
+            .badge-cyber {
+                position: relative;
+                overflow: hidden;
+            }
+            .badge-cyber::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(45deg, transparent 49%, rgba(255, 255, 255, 0.3) 50%, transparent 51%);
+                background-size: 20px 20px;
+                animation: float 3s linear infinite;
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px rgba(0, 243, 255, 0.3);
+            }
+            .typing-cursor {
+                animation: blink 1s step-end infinite;
+            }
+        }
+    </style>
+</head>
+<body class="bg-cyber-dark text-white font-inter min-h-screen overflow-x-hidden">
+    <!-- 背景效果 -->
+    <div class="fixed inset-0 city-bg opacity-20 z-0"></div>
+    <div class="fixed inset-0 bg-gradient-to-b from-cyber-dark via-cyber-dark/90 to-cyber-dark z-0"></div>
+    
+    <!-- 扫描线效果 -->
+    <div class="fixed inset-0 scan-line pointer-events-none z-10"></div>
+    
+    <!-- 主容器 -->
+    <div class="relative z-20">
+        <!-- 导航栏 -->
+        <header class="glass-effect sticky top-0 z-50 border-b border-cyber-blue/20">
+            <div class="container mx-auto px-4 py-4">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-cyber-blue to-cyber-pink flex items-center justify-center border border-cyber-blue/50 border-glow">
+                            <i class="fa fa-users text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-2xl font-orbitron font-bold text-cyber-blue text-glow">
+                                2026<span class="text-cyber-pink">组队</span>
+                            </h1>
+                            <p class="text-xs text-cyber-blue/70">芝麻分凑分 · 赛博组队</p>
+                        </div>
+                    </div>
+                    <div class="hidden md:flex items-center space-x-6">
+                        <button id="show-post-form" class="btn-cyber bg-gradient-to-r from-cyber-blue to-cyber-pink text-white px-6 py-2 rounded-md font-medium border border-cyber-blue/30 hover:border-cyber-blue/50 transition-all">
+                            <i class="fa fa-plus-circle mr-2"></i>发布需求
+                        </button>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-3 h-3 rounded-full bg-cyber-green animate-pulse"></div>
+                            <span class="text-sm text-cyber-green">实时在线: <span id="online-count">1,247</span></span>
+                        </div>
+                    </div>
+                    <button class="md:hidden text-cyber-blue text-2xl" id="mobile-menu-btn">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- 移动端菜单 -->
+            <div id="mobile-menu" class="hidden md:hidden glass-effect border-t border-cyber-blue/20">
+                <div class="container mx-auto px-4 py-4 space-y-4">
+                    <button id="show-post-form-mobile" class="btn-cyber w-full bg-gradient-to-r from-cyber-blue to-cyber-pink text-white px-6 py-3 rounded-md font-medium border border-cyber-blue/30">
+                        <i class="fa fa-plus-circle mr-2"></i>发布需求
+                    </button>
+                    <div class="flex items-center justify-center space-x-2">
+                        <div class="w-3 h-3 rounded-full bg-cyber-green animate-pulse"></div>
+                        <span class="text-sm text-cyber-green">实时在线: <span id="online-count-mobile">1,247</span></span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主内容区 -->
+        <main class="container mx-auto px-4 py-8">
+            <!-- 活动说明 -->
+            <section class="mb-8">
+                <div class="glass-effect rounded-xl p-6 border border-cyber-blue/20">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-3xl font-orbitron font-bold text-white mb-2">
+                                <span class="text-cyber-blue text-glow">2026</span> 分红包活动
+                            </h2>
+                            <p class="text-gray-300 mb-4">最多三人组队，共同凑齐2026分，瓜分红包及集卡翻倍奖励</p>
+                            <div class="flex flex-wrap gap-3">
+                                <div class="badge-cyber bg-cyber-blue/20 text-cyber-blue px-3 py-1 rounded-full text-sm font-medium border border-cyber-blue/30">
+                                    <i class="fa fa-users mr-1"></i>3人组队
+                                </div>
+                                <div class="badge-cyber bg-cyber-pink/20 text-cyber-pink px-3 py-1 rounded-full text-sm font-medium border border-cyber-pink/30">
+                                    <i class="fa fa-star mr-1"></i>2026分目标
+                                </div>
+                                <div class="badge-cyber bg-cyber-green/20 text-cyber-green px-3 py-1 rounded-full text-sm font-medium border border-cyber-green/30">
+                                    <i class="fa fa-gift mr-1"></i>红包奖励
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="text-5xl font-orbitron font-bold text-cyber-pink text-glow-lg mb-2">2026</div>
+                            <div class="text-sm text-gray-400">目标分数</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 筛选和搜索 -->
+            <section class="mb-8">
+                <div class="glass-effect rounded-xl p-4 border border-cyber-blue/20">
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="flex-1">
+                            <div class="relative">
+                                <input type="text" id="search-input" placeholder="搜索队伍或玩家..." class="w-full bg-cyber-dark-gray/50 border border-cyber-blue/30 rounded-md px-4 py-3 pl-10 text-white input-focus transition-all duration-300">
+                                <button id="search-btn" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-cyber-blue/50 hover:text-cyber-blue transition-colors duration-300 cursor-pointer">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                                <span id="search-status" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm hidden"></span>
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            <select class="bg-cyber-dark-gray/50 border border-cyber-blue/30 rounded-md px-4 py-3 text-white input-focus">
+                                <option value="">所有类型</option>
+                                <option value="need">缺人</option>
+                                <option value="seek">求组</option>
+                            </select>
+                            <select class="bg-cyber-dark-gray/50 border border-cyber-blue/30 rounded-md px-4 py-3 text-white input-focus">
+                                <option value="">分数范围</option>
+                                <option value="800+">800分以上</option>
+                                <option value="700+">700分以上</option>
+                                <option value="600+">600分以上</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 组队列表 -->
+            <section>
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-orbitron font-bold text-white">
+                        <i class="fa fa-list-ul text-cyber-blue mr-2"></i>组队大厅
+                    </h3>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm text-gray-400">排序:</span>
+                        <select class="bg-cyber-dark-gray/50 border border-cyber-blue/30 rounded-md px-3 py-1 text-white text-sm input-focus">
+                            <option value="time">最新发布</option>
+                            <option value="score">分数优先</option>
+                            <option value="members">人数优先</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="team-list" class="space-y-4">
+                    <!-- 组队卡片将通过JavaScript动态生成 -->
+                </div>
+
+                <!-- 加载更多 -->
+                <div class="text-center mt-8">
+                    <button id="load-more" class="btn-cyber bg-cyber-gray text-cyber-blue px-6 py-3 rounded-md font-medium border border-cyber-blue/30 hover:border-cyber-blue/50 transition-all">
+                        <i class="fa fa-refresh mr-2"></i>加载更多
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="glass-effect border-t border-cyber-blue/20 mt-12">
+            <div class="container mx-auto px-4 py-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <div class="flex items-center space-x-3 mb-2">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-r from-cyber-blue to-cyber-pink flex items-center justify-center border border-cyber-blue/50">
+                                <i class="fa fa-users text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-orbitron font-bold text-cyber-blue">2026组队</h3>
+                        </div>
+                        <p class="text-sm text-gray-400">芝麻分组队凑分专用平台</p>
+                    </div>
+                    <div class="text-center md:text-right">
+                        <p class="text-sm text-gray-400 mb-2">问题反馈与建议，请联系</p>
+                        <div class="flex items-center justify-center md:justify-end space-x-2">
+                            <i class="fa fa-wechat text-cyber-green"></i>
+                            <span class="text-cyber-green font-medium">glory18881</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-t border-cyber-blue/10 mt-6 pt-6 text-center text-xs text-gray-500">
+                    © 2026 赛博组队平台 | 仅供支付宝活动使用
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 发布需求模态框 -->
+    <div id="post-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center">
+        <div class="glass-effect rounded-xl p-8 border border-cyber-blue/30 max-w-md w-full mx-4 transform transition-all">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-orbitron font-bold text-white">
+                    <span class="text-cyber-blue">发布</span>组队需求
+                </h3>
+                <button id="close-modal" class="text-gray-400 hover:text-white text-2xl">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="post-form" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">需求类型</label>
+                    <div class="flex gap-4">
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="type" value="need" class="text-cyber-blue focus:ring-cyber-blue" checked="">
+                            <span>缺人</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="type" value="seek" class="text-cyber-blue focus:ring-cyber-blue">
+                            <span>求组</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="score" class="block text-sm font-medium text-gray-300 mb-2">
+                        <span id="score-label">当前队伍总分</span>
+                        <span class="text-cyber-pink">*</span>
+                    </label>
+                    <input type="number" id="score" name="score" required="" class="w-full bg-cyber-dark-gray/50 border border-cyber-blue/30 rounded-md px-4 py-3 text-white input-focus" placeholder="请输入分数">
+                </div>
+                
+                <div id="need-score-container">
+                    <label for="need-score" class="block text-sm font-medium text-gray-300 mb-2">
+                        需要的分数
+                        <span class="text-cyber-pink">*</span>
+                    </label>
+                    <input type="number" id="need-score" name="need-score" required="" class="w-full bg-cyber-dark-gray/50 border border-cyber-blue/30 rounded-md px-4 py-3 text-white input-focus" placeholder="请输入需要的分数">
+                </div>
+                
+                <div>
+                    <label for="members" class="block text-sm font-medium text-gray-300 mb-2">
+                        <span id="members-label">当前人数</span>
+                        <span class="text-cyber-pink">*</span>
+                    </label>
+                    <select id="members" name="members" required="" class="w-full bg-cyber-dark-gray/50 border border-cyber-blue/30 rounded-md px-4 py-3 text-white input-focus">
+                        <option value="1">1人</option>
+                        <option value="2" selected="">2人</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="contact" class="block text-sm font-medium text-gray-300 mb-2">
+                        联系方式
+                        <span class="text-cyber-pink">*</span>
+                    </label>
+                    <input type="text" id="contact" name="contact" required="" class="w-full bg-cyber-dark-gray/50 border border-cyber-blue/30 rounded-md px-4 py-3 text-white input-focus" placeholder="请输入微信号或支付宝号">
+                </div>
+                
+                <div>
+                    <label for="description" class="block text-sm font-medium text-gray-300 mb-2">备注说明</label>
+                    <textarea id="description" name="description" rows="3" class="w-full bg-cyber-dark-gray/50 border border-cyber-blue/30 rounded-md px-4 py-3 text-white input-focus" placeholder="请输入其他说明信息"></textarea>
+                </div>
+                
+                <div class="pt-4">
+                    <button type="submit" class="btn-cyber w-full bg-gradient-to-r from-cyber-blue to-cyber-pink text-white px-6 py-3 rounded-md font-medium border border-cyber-blue/30 hover:border-cyber-blue/50 transition-all">
+                        <i class="fa fa-paper-plane mr-2"></i>发布需求
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // 模拟数据
+        const mockTeams = [
+            {
+                id: 1,
+                type: 'need',
+                score: 1520,
+                needScore: 506,
+                members: 2,
+                totalMembers: 3,
+                contact: 'wxid_123456',
+                description: '队伍已有2人，总分1520，还需要506分，要求芝麻分800+，速度组队！',
+                time: '2分钟前',
+                online: true
+            },
+            {
+                id: 2,
+                type: 'seek',
+                score: 850,
+                members: 1,
+                totalMembers: 3,
+                contact: 'alipay_7890',
+                description: '个人芝麻分850，寻找队伍，可提供高额分数支持，希望尽快组队完成任务',
+                time: '5分钟前',
+                online: true
+            },
+            {
+                id: 3,
+                type: 'need',
+                score: 1280,
+                needScore: 746,
+                members: 2,
+                totalMembers: 3,
+                contact: 'wx_abcdef',
+                description: '两人队伍，总分1280，需要一名队友，分数要求700+即可，人齐就开',
+                time: '8分钟前',
+                online: false
+            },
+            {
+                id: 4,
+                type: 'seek',
+                score: 720,
+                members: 1,
+                totalMembers: 3,
+                contact: 'wechat_1111',
+                description: '芝麻分720，每天活跃，寻找靠谱队伍，能稳定完成任务的来',
+                time: '15分钟前',
+                online: true
+            },
+            {
+                id: 5,
+                type: 'need',
+                score: 1800,
+                needScore: 226,
+                members: 2,
+                totalMembers: 3,
+                contact: 'zfb_2222',
+                description: '高分队伍，总分1800，只差226分，要求不高，600分以上即可，速来',
+                time: '20分钟前',
+                online: true
+            }
+        ];
+
+        // DOM 元素
+        const teamList = document.getElementById('team-list');
+        const showPostFormBtn = document.getElementById('show-post-form');
+        const showPostFormMobileBtn = document.getElementById('show-post-form-mobile');
+        const closeModalBtn = document.getElementById('close-modal');
+        const postModal = document.getElementById('post-modal');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const loadMoreBtn = document.getElementById('load-more');
+        const postForm = document.getElementById('post-form');
+        const typeRadios = document.querySelectorAll('input[name="type"]');
+        const scoreLabel = document.getElementById('score-label');
+        const membersLabel = document.getElementById('members-label');
+        const needScoreContainer = document.getElementById('need-score-container');
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const searchStatus = document.getElementById('search-status');
+
+        // 渲染组队卡片
+        function renderTeamCard(team) {
+            const card = document.createElement('div');
+            card.className = 'glass-effect rounded-xl p-6 border border-cyber-blue/20 glass-effect-hover card-hover';
+            
+            const typeText = team.type === 'need' ? '缺人' : '求组';
+            const typeColor = team.type === 'need' ? 'cyber-pink' : 'cyber-blue';
+            const typeBg = team.type === 'need' ? 'bg-cyber-pink/20' : 'bg-cyber-blue/20';
+            const typeBorder = team.type === 'need' ? 'border-cyber-pink/30' : 'border-cyber-blue/30';
+            
+            const scoreText = team.type === 'need' 
+                ? `当前总分: <span class="text-${typeColor} font-bold">${team.score}</span> 分`
+                : `个人分数: <span class="text-${typeColor} font-bold">${team.score}</span> 分`;
+            
+            const needScoreText = team.type === 'need' 
+                ? `<div class="flex items-center space-x-2">
+                    <span class="text-sm text-gray-400">还需分数:</span>
+                    <span class="text-cyber-green font-bold text-lg">${team.needScore}</span>
+                  </div>`
+                : '';
+            
+            card.innerHTML = `
+                <div class="flex flex-col md:flex-row justify-between">
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="${typeBg} text-${typeColor} px-3 py-1 rounded-full text-sm font-medium border ${typeBorder}">
+                                    ${typeText}
+                                </div>
+                                ${team.online ? '<div class="w-2 h-2 rounded-full bg-cyber-green animate-pulse"></div>' : ''}
+                            </div>
+                            <div class="text-xs text-gray-400">${team.time}</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="text-sm text-gray-400 mb-1">${scoreText}</div>
+                            ${needScoreText}
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="flex items-center space-x-2 mb-1">
+                                <span class="text-sm text-gray-400">当前人数:</span>
+                                <span class="text-cyber-blue font-bold text-lg">${team.members}/${team.totalMembers}</span>
+                            </div>
+                            <div class="w-full bg-cyber-dark-gray rounded-full h-2">
+                                <div class="bg-gradient-to-r from-cyber-blue to-cyber-pink h-2 rounded-full" style="width: ${(team.members / team.totalMembers) * 100}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="text-sm text-gray-300 line-clamp-2">${team.description}</div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <i class="fa fa-contact-card text-cyber-blue"></i>
+                                <div class="relative">
+                                    <input type="text" value="${team.contact}" class="hidden" id="contact-${team.id}">
+                                    <button onclick="copyContact('${team.contact}', ${team.id})" class="text-sm text-cyber-blue hover:text-cyber-pink transition-colors flex items-center space-x-1">
+                                        <span>复制联系方式</span>
+                                        <i class="fa fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button onclick="joinTeam(${team.id})" class="btn-cyber bg-cyber-blue/20 text-cyber-blue px-4 py-2 rounded-md text-sm font-medium border border-cyber-blue/30 hover:border-cyber-blue/50 transition-all">
+                                <i class="fa fa-plus mr-1"></i>加入
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="ml-0 md:ml-6 mt-4 md:mt-0 flex flex-col items-center justify-center">
+                        <div class="text-4xl font-orbitron font-bold text-cyber-pink text-glow mb-1">${team.type === 'need' ? team.needScore : team.score}</div>
+                        <div class="text-xs text-gray-400">${team.type === 'need' ? '还需分数' : '个人分数'}</div>
+                    </div>
+                </div>
+            `;
+            
+            teamList.appendChild(card);
+        }
+
+        // 渲染所有队伍
+        function renderTeams(teams) {
+            teamList.innerHTML = '';
+            teams.forEach(team => renderTeamCard(team));
+        }
+
+        // 初始化
+        function init() {
+            renderTeams(mockTeams);
+            
+            // 移动端菜单
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // 显示发布需求模态框
+            showPostFormBtn.addEventListener('click', () => {
+                postModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            showPostFormMobileBtn.addEventListener('click', () => {
+                postModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+                mobileMenu.classList.add('hidden');
+            });
+            
+            // 关闭模态框
+            closeModalBtn.addEventListener('click', () => {
+                postModal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            });
+            
+            // 点击模态框外部关闭
+            postModal.addEventListener('click', (e) => {
+                if (e.target === postModal) {
+                    postModal.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+            
+            // 需求类型切换
+            typeRadios.forEach(radio => {
+                radio.addEventListener('change', () => {
+                    if (radio.value === 'need') {
+                        scoreLabel.textContent = '当前队伍总分';
+                        membersLabel.textContent = '当前人数';
+                        needScoreContainer.classList.remove('hidden');
+                    } else {
+                        scoreLabel.textContent = '个人分数';
+                        membersLabel.textContent = '组队人数';
+                        needScoreContainer.classList.add('hidden');
+                    }
+                });
+            });
+            
+            // 搜索功能
+            function performSearch() {
+                const searchTerm = searchInput.value.trim().toLowerCase();
+                
+                // 显示搜索中状态
+                searchStatus.textContent = '搜索中...';
+                searchStatus.className = 'absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-cyber-blue';
+                searchStatus.classList.remove('hidden');
+                
+                searchInput.classList.add('border-cyber-blue/50');
+                
+                // 模拟搜索延迟
+                setTimeout(() => {
+                    let filteredTeams = [...mockTeams];
+                    
+                    // 文本搜索
+                    if (searchTerm) {
+                        // 尝试解析为数字（分数搜索）
+                        const searchScore = parseInt(searchTerm);
+                        if (!isNaN(searchScore)) {
+                            // 分数搜索：查找分数相近的队伍（±50分范围内）
+                            filteredTeams = filteredTeams.filter(team => 
+                                Math.abs(team.score - searchScore) <= 50
+                            );
+                        } else {
+                            // 关键词搜索
+                            filteredTeams = filteredTeams.filter(team => 
+                                team.description.toLowerCase().includes(searchTerm) ||
+                                team.contact.toLowerCase().includes(searchTerm)
+                            );
+                        }
+                    }
+                    
+                    // 更新显示状态
+                    if (filteredTeams.length === 0) {
+                        searchStatus.textContent = '无结果';
+                        searchStatus.className = 'absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-cyber-pink';
+                        searchInput.classList.remove('border-cyber-blue/50');
+                        searchInput.classList.add('border-cyber-pink/50');
+                        
+                        // 渲染筛选后的队伍
+                        renderTeams(filteredTeams);
+                    } else {
+                        searchStatus.textContent = `找到 ${filteredTeams.length} 个结果`;
+                        searchStatus.className = 'absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-cyber-green';
+                        searchInput.classList.remove('border-cyber-blue/50', 'border-cyber-pink/50');
+                        searchInput.classList.add('border-cyber-green/50');
+                        
+                        // 渲染筛选后的队伍
+                        renderTeams(filteredTeams);
+                        
+                        // 如果有符合要求的队伍，直接跳转到第一个匹配的队伍
+                        setTimeout(() => {
+                            const firstTeamId = filteredTeams[0].id;
+                            joinTeam(firstTeamId);
+                        }, 500);
+                    }
+                    
+                    // 3秒后隐藏状态
+                    setTimeout(() => {
+                        searchStatus.classList.add('hidden');
+                        searchInput.classList.remove('border-cyber-blue/50', 'border-cyber-pink/50', 'border-cyber-green/50');
+                    }, 3000);
+                }, 500);
+            }
+            
+            // 搜索按钮点击事件
+            searchBtn.addEventListener('click', performSearch);
+            
+            // 输入框回车事件
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+            
+            // 输入框焦点效果
+            searchInput.addEventListener('focus', () => {
+                searchInput.classList.add('border-cyber-blue/50');
+            });
+            
+            searchInput.addEventListener('blur', () => {
+                if (!searchStatus.classList.contains('hidden')) {
+                    searchInput.classList.remove('border-cyber-blue/50');
+                }
+            });
+            
+            // 加入队伍功能
+            window.joinTeam = function(teamId) {
+                const team = mockTeams.find(t => t.id === teamId);
+                if (team) {
+                    // 显示加入成功提示
+                    const successAlert = document.createElement('div');
+                    successAlert.className = 'fixed top-4 right-4 glass-effect bg-cyber-green/20 text-cyber-green px-6 py-3 rounded-md border border-cyber-green/30 z-50 transform transition-all duration-300 translate-x-full';
+                    successAlert.innerHTML = `<i class="fa fa-check-circle mr-2"></i>成功加入队伍！正在跳转...`;
+                    document.body.appendChild(successAlert);
+                    
+                    // 显示提示
+                    setTimeout(() => {
+                        successAlert.classList.remove('translate-x-full');
+                    }, 100);
+                    
+                    // 自动复制联系方式
+                    setTimeout(() => {
+                        copyContact(team.contact, team.id);
+                    }, 500);
+                    
+                    // 1.5秒后跳转到队伍详情（这里模拟为高亮显示该队伍）
+                    setTimeout(() => {
+                        // 滚动到队伍列表
+                        const teamListSection = document.querySelector('#team-list');
+                        teamListSection.scrollIntoView({ behavior: 'smooth' });
+                        
+                        // 重新渲染列表并高亮选中的队伍
+                        renderTeams(mockTeams);
+                        
+                        // 高亮显示选中的队伍
+                        setTimeout(() => {
+                            const teamCards = teamList.querySelectorAll('.glass-effect');
+                            teamCards.forEach((card, index) => {
+                                const cardTeamId = mockTeams[index].id;
+                                if (cardTeamId === teamId) {
+                                    card.classList.add('border-glow-lg', 'border-cyber-green', 'animate-pulse-fast');
+                                    
+                                    // 滚动到该队伍位置
+                                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                    
+                                    // 3秒后移除高亮效果
+                                    setTimeout(() => {
+                                        card.classList.remove('border-glow-lg', 'border-cyber-green', 'animate-pulse-fast');
+                                    }, 3000);
+                                }
+                            });
+                        }, 300);
+                        
+                        // 隐藏成功提示
+                        successAlert.classList.add('translate-x-full');
+                        setTimeout(() => {
+                            document.body.removeChild(successAlert);
+                        }, 300);
+                    }, 1500);
+                }
+            };
+
+            // 复制联系方式功能
+            window.copyContact = function(contact, id) {
+                const input = document.getElementById(`contact-${id}`);
+                input.select();
+                input.setSelectionRange(0, 99999); // 兼容移动设备
+                document.execCommand('copy');
+                
+                // 显示复制成功提示
+                const button = event.target.closest('button');
+                const originalText = button.innerHTML;
+                button.innerHTML = '<span>已复制！</span><i class="fa fa-check"></i>';
+                button.classList.add('text-cyber-green');
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.classList.remove('text-cyber-green');
+                }, 2000);
+            };
+
+            // 表单提交
+            postForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // 表单验证
+                const type = document.querySelector('input[name="type"]:checked').value;
+                const score = document.getElementById('score').value;
+                const contact = document.getElementById('contact').value;
+                const description = document.getElementById('description').value;
+                
+                if (!score || !contact) {
+                    // 显示错误提示
+                    const errorAlert = document.createElement('div');
+                    errorAlert.className = 'fixed top-4 right-4 glass-effect bg-cyber-pink/20 text-cyber-pink px-6 py-3 rounded-md border border-cyber-pink/30 z-50 transform transition-all duration-300 translate-x-full';
+                    errorAlert.innerHTML = '<i class="fa fa-exclamation-circle mr-2"></i>请填写必要信息！';
+                    document.body.appendChild(errorAlert);
+                    
+                    setTimeout(() => {
+                        errorAlert.classList.remove('translate-x-full');
+                    }, 100);
+                    
+                    setTimeout(() => {
+                        errorAlert.classList.add('translate-x-full');
+                        setTimeout(() => {
+                            document.body.removeChild(errorAlert);
+                        }, 300);
+                    }, 3000);
+                    return;
+                }
+                
+                // 创建新的队伍数据
+                const newTeam = {
+                    id: mockTeams.length + 1,
+                    type: type,
+                    score: parseInt(score),
+                    needScore: type === 'need' ? 2026 - parseInt(score) : 0,
+                    members: type === 'need' ? parseInt(document.getElementById('members').value) : 1,
+                    totalMembers: 3,
+                    contact: contact,
+                    description: description || (type === 'need' ? '寻找队友一起凑分' : '寻找队伍加入'),
+                    time: '刚刚',
+                    online: true
+                };
+                
+                // 添加到列表开头
+                mockTeams.unshift(newTeam);
+                
+                // 重新渲染列表
+                renderTeams(mockTeams);
+                
+                // 关闭模态框
+                postModal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+                
+                // 重置表单
+                postForm.reset();
+                
+                // 显示成功提示
+                const successAlert = document.createElement('div');
+                successAlert.className = 'fixed top-4 right-4 glass-effect bg-cyber-green/20 text-cyber-green px-6 py-3 rounded-md border border-cyber-green/30 z-50 transform transition-all duration-300 translate-x-full';
+                successAlert.innerHTML = '<i class="fa fa-check-circle mr-2"></i>需求发布成功！';
+                document.body.appendChild(successAlert);
+                
+                setTimeout(() => {
+                    successAlert.classList.remove('translate-x-full');
+                }, 100);
+                
+                // 3秒后隐藏提示
+                setTimeout(() => {
+                    successAlert.classList.add('translate-x-full');
+                    setTimeout(() => {
+                        document.body.removeChild(successAlert);
+                    }, 300);
+                }, 3000);
+                
+                // 滚动到队伍列表顶部
+                setTimeout(() => {
+                    const teamListSection = document.querySelector('#team-list');
+                    teamListSection.scrollIntoView({ behavior: 'smooth' });
+                    
+                    // 高亮显示新发布的队伍
+                    const newTeamCard = teamListSection.firstElementChild;
+                    if (newTeamCard) {
+                        newTeamCard.classList.add('border-glow-lg', 'border-cyber-green');
+                        setTimeout(() => {
+                            newTeamCard.classList.remove('border-glow-lg', 'border-cyber-green');
+                        }, 2000);
+                    }
+                }, 500);
+            });
+            
+            // 搜索功能
+            const searchInput = document.getElementById('search-input');
+            let searchTimeout;
+            
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase().trim();
+                
+                // 清除之前的定时器
+                clearTimeout(searchTimeout);
+                
+                // 添加搜索中提示
+                const searchIcon = searchInput.previousElementSibling;
+                const originalIcon = searchIcon.className;
+                
+                // 显示搜索动画
+                searchIcon.className = 'fa fa-spinner fa-spin absolute left-3 top-1/2 transform -translate-y-1/2 text-cyber-blue';
+                
+                // 延迟搜索，避免频繁操作
+                searchTimeout = setTimeout(() => {
+                    if (searchTerm === '') {
+                        // 如果搜索框为空，显示所有队伍
+                        renderTeams(mockTeams);
+                        
+                        // 显示搜索提示
+                        const searchHint = document.createElement('div');
+                        searchHint.className = 'text-center py-8 text-gray-400';
+                        searchHint.innerHTML = '<i class="fa fa-info-circle mr-2"></i>输入关键词搜索队伍或玩家';
+                        
+                        if (teamList.children.length === 0) {
+                            teamList.appendChild(searchHint);
+                        }
+                    } else {
+                        // 根据搜索词过滤队伍
+                        const filteredTeams = mockTeams.filter(team => {
+                            return team.description.toLowerCase().includes(searchTerm) ||
+                                   team.contact.toLowerCase().includes(searchTerm) ||
+                                   team.score.toString().includes(searchTerm) ||
+                                   team.needScore.toString().includes(searchTerm);
+                        });
+                        
+                        renderTeams(filteredTeams);
+                        
+                        // 如果没有搜索结果，显示提示
+                        if (filteredTeams.length === 0) {
+                            teamList.innerHTML = `
+                                <div class="text-center py-12">
+                                    <i class="fa fa-search text-4xl text-cyber-blue/30 mb-4"></i>
+                                    <p class="text-gray-400">未找到相关队伍</p>
+                                    <p class="text-sm text-gray-500 mt-2">试试其他关键词吧</p>
+                                </div>
+                            `;
+                        } else {
+                            // 显示搜索结果数量
+                            const resultCount = document.createElement('div');
+                            resultCount.className = 'text-right text-sm text-cyber-blue mb-4';
+                            resultCount.innerHTML = `<i class="fa fa-search mr-1"></i>找到 ${filteredTeams.length} 个相关队伍`;
+                            teamList.insertBefore(resultCount, teamList.firstChild);
+                        }
+                    }
+                    
+                    // 恢复原始图标
+                    searchIcon.className = originalIcon;
+                }, 500);
+            });
+
+            // 加载更多
+            loadMoreBtn.addEventListener('click', () => {
+                loadMoreBtn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>加载中...';
+                
+                // 模拟加载延迟
+                setTimeout(() => {
+                    // 可以在这里添加更多模拟数据
+                    loadMoreBtn.innerHTML = '<i class="fa fa-check mr-2"></i>已加载全部';
+                    loadMoreBtn.disabled = true;
+                    loadMoreBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                }, 1500);
+            });
+            
+            // 实时在线人数更新
+            setInterval(() => {
+                const onlineCount = document.getElementById('online-count');
+                const onlineCountMobile = document.getElementById('online-count-mobile');
+                const currentCount = parseInt(onlineCount.textContent.replace(',', ''));
+                const change = Math.floor(Math.random() * 21) - 10; // -10 到 10 的随机数
+                const newCount = Math.max(1000, currentCount + change);
+                onlineCount.textContent = newCount.toLocaleString();
+                onlineCountMobile.textContent = newCount.toLocaleString();
+            }, 5000);
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+
+</body></html>
